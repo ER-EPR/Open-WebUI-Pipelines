@@ -219,7 +219,7 @@ class Pipeline:
     
     async def on_startup(self):
         logger.debug(f"on_startup:{self.name}")
-        if not (self.valves.FIRECRAWL_API_KEY or self.valves.FIRECRAWL_API_URL):
+        if not any([self.valves.FIRECRAWL_API_KEY, self.valves.FIRECRAWL_API_URL]):
             logger.warning("FIRECRAWL_API_KEY and FIRECRAWL_API_URL not set. Pipeline will not function correctly.")
         
         if self._debug:
