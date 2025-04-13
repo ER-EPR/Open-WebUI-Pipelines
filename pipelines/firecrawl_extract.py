@@ -176,6 +176,7 @@ class FirecrawlClient:
 class Pipeline:
     class Valves(BaseModel):
         FIRECRAWL_API_KEY: str = Field(default="", description="Firecrawl API key")
+        FIRECRAWL_API_URL: str = Field(default="https://api.firecrawl.dev/v1", description="Firecrawl API url")
         DEFAULT_FORMAT: str = Field(default="markdown", description="Default format for content extraction")
         ONLY_MAIN_CONTENT: bool = Field(default=True, description="Extract only main content")
         WAIT_FOR: int = Field(default=5000, description="Wait time in milliseconds")
@@ -210,12 +211,18 @@ class Pipeline:
                 logger.warning("FIRECRAWL_API_KEY is not set or empty")
             else:
                 api_key = self.valves.FIRECRAWL_API_KEY
-                logger.debug(f"Using API key: {api_key[:4]}...{api_key[-4:] if len(api_key) > 8 else ''}")
+                logger.debug(f"Using API key: {api_key[:4]}...{api_key[-4:] if len(api_key) > 8 else ''}")  
+                
+            if not self.valves.FIRECRAWL_API_URL:
+                logger.warning("FIRECRAWL_API_URL is not set or empty")
+            else:
+                api_url = self.valves.FIRECRAWL_API_URL
+                logger.debug(f"Using API url: {api_url} ")
     
     async def on_startup(self):
         logger.debug(f"on_startup:{self.name}")
-        if not self.valves.FIRECRAWL_API_KEY:
-            logger.warning("FIRECRAWL_API_KEY not set. Pipeline will not function correctly.")
+        if not any([self.valves.FIRECRAWL_API_KEY, self.valves.FIRECRAWL_API_URL]):
+            logger.warning("FIRECRAWL_API_KEY and FIRECRAWL_API_URL not set. Pipeline will not function correctly.")
         
         if self._debug:
             logger.debug("Debug mode is enabled. Detailed logs will be shown.")
@@ -255,7 +262,7 @@ class Pipeline:
         urls = url_pattern.findall(message)
 
         # Initialize the Firecrawl client
-        self.client = FirecrawlClient(api_key=self.valves.FIRECRAWL_API_KEY, debug=self._debug)
+        self.client = FirecrawlClient(api_key=self.valves.FIRECRAWL_API_KEY, api_url=self.valves.FIRECRAWL_API_URL, debug=self._debug)
 
         if self._debug:
             logger.debug(f"Extracted URLs from message: {urls}")
