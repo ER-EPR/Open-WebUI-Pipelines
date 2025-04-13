@@ -175,7 +175,7 @@ class FirecrawlClient:
 class Pipeline:
     class Valves(BaseModel):
         FIRECRAWL_API_KEY: str = Field(default="", description="Firecrawl API key")
-        FIRECRAWL_API_URL: str = Field(default="http://api.firecrawl.dev/v1", description="Firecrawl API url")
+        FIRECRAWL_API_URL: str = Field(default="https://api.firecrawl.dev/v1", description="Firecrawl API url")
         DEFAULT_FORMAT: str = Field(default="markdown", description="Default format for content extraction")
         ONLY_MAIN_CONTENT: bool = Field(default=True, description="Extract only main content")
         WAIT_FOR: int = Field(default=5000, description="Wait time in milliseconds")
