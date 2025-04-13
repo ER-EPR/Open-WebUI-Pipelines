@@ -132,12 +132,6 @@ class Pipeline:
         
         if self._debug:
             logger.debug("Debug mode is enabled. Detailed logs will be shown.")
-            
-        if not self.valves.FIRECRAWL_API_URL:
-                logger.warning("FIRECRAWL_API_URL is not set or empty")
-            else:
-                api_url = self.valves.FIRECRAWL_API_URL
-                logger.debug(f"Using API url: {api_url} ")
     
     async def on_shutdown(self):
         logger.debug(f"on_shutdown:{self.name}")
