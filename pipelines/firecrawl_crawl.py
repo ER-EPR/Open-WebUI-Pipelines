@@ -230,7 +230,7 @@ class Pipeline:
     
     def _extract_url_from_message(self, message: str) -> str:
         # Initialize the Firecrawl client
-        self.client = FirecrawlClient(api_key=self.valves.FIRECRAWL_API_KEY, self.valves.FIRECRAWL_API_URL, debug=self._debug)
+        self.client = FirecrawlClient(api_key=self.valves.FIRECRAWL_API_KEY, api_url=self.valves.FIRECRAWL_API_URL, debug=self._debug)
 
         """Extract URL from user message"""
         url_pattern = r'https?://(?:[-\w.]|(?:%[\da-fA-F]{2}))+'
