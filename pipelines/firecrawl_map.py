@@ -94,6 +94,7 @@ class FirecrawlClient:
 class Pipeline:
     class Valves(BaseModel):
         FIRECRAWL_API_KEY: str = Field(default="", description="Firecrawl API key")
+        FIRECRAWL_API_URL: str = Field(default="https://api.firecrawl.dev/v1", description="Firecrawl API url")
         URL_LIMIT: int = Field(default=100, description="Maximum number of URLs to process")
         IGNORE_SITEMAP: bool = Field(default=False, description="Ignore sitemap.xml when mapping URLs")
         SITEMAP_ONLY: bool = Field(default=False, description="Only use sitemap.xml when mapping URLs")
@@ -131,13 +132,19 @@ class Pipeline:
         
         if self._debug:
             logger.debug("Debug mode is enabled. Detailed logs will be shown.")
+            
+        if not self.valves.FIRECRAWL_API_URL:
+                logger.warning("FIRECRAWL_API_URL is not set or empty")
+            else:
+                api_url = self.valves.FIRECRAWL_API_URL
+                logger.debug(f"Using API url: {api_url} ")
     
     async def on_shutdown(self):
         logger.debug(f"on_shutdown:{self.name}")
     
     def _extract_url_from_message(self, message: str) -> str:
         # Initialize the Firecrawl client
-        self.client = FirecrawlClient(api_key=self.valves.FIRECRAWL_API_KEY, debug=self._debug)
+        self.client = FirecrawlClient(api_key=self.valves.FIRECRAWL_API_KEY, api_url=self.valves.FIRECRAWL_API_URL, debug=self._debug)
 
         """Extract URL from user message"""
         url_pattern = r'https?://(?:[-\w.]|(?:%[\da-fA-F]{2}))+'
