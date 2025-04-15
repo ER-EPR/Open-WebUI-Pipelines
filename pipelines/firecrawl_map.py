@@ -36,7 +36,7 @@ class MapResponse(BaseModel):
     links: List[str]
 
 class FirecrawlClient:
-    def __init__(self, api_key: str, debug: bool = False):
+    def __init__(self, api_key: str, api_url: str, debug: bool = False):
         self.api_key = api_key
         self.base_url = "https://api.firecrawl.dev/v1"
         self.debug = debug
