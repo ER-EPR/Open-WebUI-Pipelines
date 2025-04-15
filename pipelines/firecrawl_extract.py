@@ -457,7 +457,7 @@ class Pipeline:
         
         # Initialize the Firecrawl client if not already done
         if not hasattr(self, 'client'):
-            self.client = FirecrawlClient(api_key=self.valves.FIRECRAWL_API_KEY, debug=self._debug)
+            self.client = FirecrawlClient(api_key=self.valves.FIRECRAWL_API_KEY, api_url=self.valves.FIRECRAWL_API_URL, debug=self._debug)
         
         if body.get("title", False):
             return "Firecrawl Data Extraction Pipeline"
