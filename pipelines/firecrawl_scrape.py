@@ -49,7 +49,7 @@ class ScrapeResponse(BaseModel):
 class FirecrawlClient:
     def __init__(self, api_key: str, api_url: str, debug: bool = False):
         self.api_key = api_key
-        self.base_url = "https://api.firecrawl.dev/v1"
+        self.base_url = api_url
         self.debug = debug
 
     def headers(self):
